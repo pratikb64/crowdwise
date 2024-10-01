@@ -20,6 +20,7 @@ export const registerController: CustomRequestHandler<RegisterRequest> = async (
 			return res.status(400).json({
 				success: false,
 				message: "User already exists",
+				status: 400,
 			});
 		}
 
@@ -38,12 +39,14 @@ export const registerController: CustomRequestHandler<RegisterRequest> = async (
 		return res.status(201).json({
 			success: true,
 			message: "User registered successfully!",
+			status: 201,
 		});
 	} catch (error) {
 		console.log("🔴Uncaught error in registerController🔴 : ", error);
 		return res.status(500).json({
 			success: false,
 			message: "Internal server error",
+			status: 500,
 		});
 	}
 };

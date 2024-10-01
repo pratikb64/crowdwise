@@ -21,12 +21,14 @@ export const getCommentsController: CustomRequestHandler<
 			success: true,
 			message: "Comments found",
 			data: allComments,
+			status: 200,
 		});
 	} catch (error) {
 		console.log("🔴Uncaught error in getCommentsController🔴 : ", error);
 		return res.status(500).json({
 			success: false,
 			message: "Internal server error",
+			status: 500,
 		});
 	}
 };

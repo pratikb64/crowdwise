@@ -18,6 +18,7 @@ export const postCommentController: CustomRequestHandler<
 			return res.status(404).json({
 				success: false,
 				message: "Post not found",
+				status: 404,
 			});
 		}
 
@@ -33,12 +34,14 @@ export const postCommentController: CustomRequestHandler<
 		return res.status(201).json({
 			success: true,
 			message: "Comment posted successfully",
+			status: 201,
 		});
 	} catch (error) {
 		console.log("🔴Uncaught error in postCommentController🔴 : ", error);
 		return res.status(500).json({
 			success: false,
 			message: "Internal server error",
+			status: 500,
 		});
 	}
 };

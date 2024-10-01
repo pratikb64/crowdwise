@@ -1,8 +1,9 @@
+import type { Company } from "@/database/schema/companies";
 import type { ZodExpressSchema } from "@/types";
 import { z } from "zod";
 
 export const getCompanyRequestParams = z.object({
-	companyId: z.string(),
+	shortName: z.string(),
 });
 
 export const getCompanyModel: ZodExpressSchema = {
@@ -11,10 +12,4 @@ export const getCompanyModel: ZodExpressSchema = {
 
 export type GetCompanyRequest = z.infer<typeof getCompanyRequestParams>;
 
-export type GetCompanyResponse = {
-	id: string;
-	name: string;
-	shortName: string;
-	createdAt: Date;
-	updatedAt: Date;
-};
+export type GetCompanyResponse = Company;

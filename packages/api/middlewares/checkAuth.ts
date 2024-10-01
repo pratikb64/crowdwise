@@ -4,12 +4,14 @@ import jwt from "jsonwebtoken";
 
 export const checkAuth: CustomRequestHandler = async (req, res, next) => {
 	const token =
-		req.cookies["session-token"] || req.headers.authorization?.split(" ")[1];
+		req.cookies["crowdwise-access-token"] ||
+		req.headers.authorization?.split(" ")[1];
 
 	if (!token) {
 		return res.status(401).json({
 			success: false,
 			message: "Unauthorized",
+			status: 401,
 		});
 	}
 
@@ -24,6 +26,7 @@ export const checkAuth: CustomRequestHandler = async (req, res, next) => {
 		res.status(500).json({
 			success: false,
 			message: "Internal Server Error",
+			status: 500,
 		});
 	}
 };

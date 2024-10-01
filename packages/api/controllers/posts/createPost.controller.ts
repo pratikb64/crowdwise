@@ -20,6 +20,7 @@ export const createPostController: CustomRequestHandler<
 			return res.status(404).json({
 				success: false,
 				message: "Board not found",
+				status: 404,
 			});
 		}
 
@@ -35,6 +36,7 @@ export const createPostController: CustomRequestHandler<
 			return res.status(401).json({
 				success: false,
 				message: "You are not authorized to access this board!",
+				status: 401,
 			});
 		}
 
@@ -68,12 +70,14 @@ export const createPostController: CustomRequestHandler<
 		return res.status(201).json({
 			success: true,
 			message: "Posts created successfully",
+			status: 201,
 		});
 	} catch (error) {
 		console.log("🔴Uncaught error in createPostController🔴 : ", error);
 		return res.status(500).json({
 			success: false,
 			message: "Internal server error",
+			status: 500,
 		});
 	}
 };

@@ -1,5 +1,5 @@
 import { db } from "@/database";
-import { AUTH_SECRET, JWT_SECRET } from "@/env";
+import { AUTH_SECRET, JWT_SECRET, NODE_ENV } from "@/env";
 import type { LoginRequest } from "@/models/auth/login.model";
 import type { CustomRequestHandler } from "@/types";
 import { eq } from "drizzle-orm";
@@ -21,6 +21,7 @@ export const loginController: CustomRequestHandler<LoginRequest> = async (
 			return res.status(404).json({
 				success: false,
 				message: "User not found",
+				status: 404,
 			});
 		}
 
@@ -32,6 +33,7 @@ export const loginController: CustomRequestHandler<LoginRequest> = async (
 			return res.status(400).json({
 				success: false,
 				message: "Incorrect password",
+				status: 400,
 			});
 		}
 
@@ -51,21 +53,23 @@ export const loginController: CustomRequestHandler<LoginRequest> = async (
 		);
 
 		return res
-			.cookie("session-token", token, {
+			.cookie("crowdwise-access-token", token, {
 				maxAge: thirtyDaysInSeconds,
 				httpOnly: true,
-				sameSite: "none",
-				secure: true,
+				sameSite: "lax",
+				secure: NODE_ENV === "production",
 			})
 			.json({
 				success: true,
 				message: "Logged in successfully!",
+				status: 200,
 			});
 	} catch (error) {
 		console.log("🔴Uncaught error in loginController🔴 : ", error);
 		return res.status(500).json({
 			success: false,
 			message: "Internal server error",
+			status: 500,
 		});
 	}
 };

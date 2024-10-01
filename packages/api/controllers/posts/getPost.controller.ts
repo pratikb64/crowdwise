@@ -34,6 +34,7 @@ export const getPostController: CustomRequestHandler<
 			return res.status(404).json({
 				success: false,
 				message: "Post not found",
+				status: 404,
 			});
 		}
 
@@ -41,12 +42,14 @@ export const getPostController: CustomRequestHandler<
 			success: true,
 			message: "Post found",
 			data: post[0],
+			status: 200,
 		});
 	} catch (error) {
 		console.log("🔴Uncaught error in getPostController🔴 : ", error);
 		return res.status(500).json({
 			success: false,
 			message: "Internal server error",
+			status: 500,
 		});
 	}
 };

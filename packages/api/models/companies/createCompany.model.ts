@@ -1,3 +1,4 @@
+import type { Company } from "@/database/schema/companies";
 import type { ZodExpressSchema } from "@/types";
 import { z } from "zod";
 
@@ -11,3 +12,5 @@ export const createCompanyModel: ZodExpressSchema = {
 };
 
 export type CreateCompanyRequest = z.infer<typeof createCompanyRequestBody>;
+
+export type CreateCompanyResponse = Company;

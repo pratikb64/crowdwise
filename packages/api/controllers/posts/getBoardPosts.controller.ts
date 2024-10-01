@@ -24,6 +24,7 @@ export const getBoardPostsController: CustomRequestHandler<
 			return res.status(404).json({
 				success: false,
 				message: "Post not found",
+				status: 404,
 			});
 		}
 
@@ -47,12 +48,14 @@ export const getBoardPostsController: CustomRequestHandler<
 			success: true,
 			message: "Post found",
 			data: allPosts,
+			status: 200,
 		});
 	} catch (error) {
 		console.log("🔴Uncaught error in getBoardPostsController🔴 : ", error);
 		return res.status(500).json({
 			success: false,
 			message: "Internal server error",
+			status: 500,
 		});
 	}
 };

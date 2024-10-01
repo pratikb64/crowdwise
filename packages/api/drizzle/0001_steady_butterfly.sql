@@ -1,0 +1,1 @@
+ALTER TABLE "boards" ADD COLUMN "short_name" varchar(50) NOT NULL;

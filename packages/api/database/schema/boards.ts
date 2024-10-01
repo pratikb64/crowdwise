@@ -4,6 +4,7 @@ import { companies } from "./companies";
 export const boards = pgTable("boards", {
 	id: varchar("id", { length: 50 }).primaryKey(),
 	name: varchar("name", { length: 50 }).notNull(),
+	shortName: varchar("short_name", { length: 50 }).notNull(),
 	companyId: varchar("company_id")
 		.references(() => companies.id, {
 			onDelete: "cascade",

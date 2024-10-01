@@ -16,7 +16,7 @@ boardsRoutes.post(
 );
 
 boardsRoutes.get(
-	"/:boardId",
+	"/:shortName",
 	validateRequest(getBoardModel),
 	getBoardController,
 );

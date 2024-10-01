@@ -11,22 +11,24 @@ export const getCompanyController: CustomRequestHandler<
 	GetCompanyResponse
 > = async (req, res) => {
 	try {
-		const { companyId } = req.params;
+		const { shortName } = req.params;
 
 		const company = await db.query.companies.findFirst({
-			where: (companies) => eq(companies.id, companyId),
+			where: (companies) => eq(companies.shortName, shortName),
 		});
 
 		if (!company) {
 			return res.status(404).json({
 				success: false,
 				message: "Company not found",
+				status: 404,
 			});
 		}
 
 		return res.status(200).json({
 			success: true,
 			message: "Company found",
+			status: 200,
 			data: {
 				id: company.id,
 				name: company.name,
@@ -40,6 +42,7 @@ export const getCompanyController: CustomRequestHandler<
 		return res.status(500).json({
 			success: false,
 			message: "Internal server error",
+			status: 500,
 		});
 	}
 };

@@ -16,7 +16,7 @@ companiesRoutes.post(
 );
 
 companiesRoutes.get(
-	"/:companyId",
+	"/:shortName",
 	validateRequest(getCompanyModel),
 	getCompanyController,
 );

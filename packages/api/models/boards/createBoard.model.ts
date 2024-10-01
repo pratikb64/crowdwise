@@ -3,6 +3,7 @@ import { z } from "zod";
 
 export const createBoardRequestBody = z.object({
 	name: z.string().min(3),
+	shortName: z.string().min(3),
 	companyId: z.string(),
 });
 
