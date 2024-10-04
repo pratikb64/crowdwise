@@ -1,4 +1,3 @@
-import { checkAuth } from "@/middlewares/checkAuth";
 import { Router } from "express";
 import { authRoutes } from "./auth.routes";
 import { boardsRoutes } from "./boards.routes";
@@ -10,7 +9,7 @@ export const routes = Router();
 
 routes.use("/", authRoutes);
 
-routes.use("/users", checkAuth, userRoutes);
+routes.use("/users", userRoutes);
 
 routes.use("/companies", companiesRoutes);
 

@@ -22,6 +22,18 @@ export const createBoardController: CustomRequestHandler<
 			});
 		}
 
+		const board = await db.query.boards.findFirst({
+			where: (boards) => eq(boards.shortName, shortName),
+		});
+
+		if (board) {
+			return res.status(400).json({
+				success: false,
+				message: "Board already exists",
+				status: 400,
+			});
+		}
+
 		const newBoard: Board = {
 			id: crypto.randomUUID(),
 			name,

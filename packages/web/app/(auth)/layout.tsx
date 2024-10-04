@@ -1,6 +1,6 @@
 "use client";
 import { Navbar } from "@/components/Navbar";
-import { SessionProvider } from "@/hooks/useSession";
+import { SessionProvider } from "@/providers/SessionProvider";
 import type { ReactNode } from "react";
 
 export default function AuthLayout({ children }: { children: ReactNode }) {

@@ -1,3 +1,4 @@
+import { BACKEND_API_URL } from "@/lib/constants";
 import type {
 	APIResponse,
 	Board,
@@ -6,7 +7,7 @@ import type {
 } from "crowdwise-api/types";
 
 export const createBoard = async (args: CreateBoardRequest) => {
-	const response = await fetch(`${process.env.BACKEND_API_URL}/boards`, {
+	const response = await fetch(`${BACKEND_API_URL}/boards`, {
 		method: "POST",
 		credentials: "include",
 		body: JSON.stringify(args),
@@ -20,8 +21,18 @@ export const createBoard = async (args: CreateBoardRequest) => {
 };
 
 export const getBoard = async (args: GetBoardRequest) => {
+	const response = await fetch(`${BACKEND_API_URL}/boards/${args.shortName}`, {
+		method: "GET",
+		credentials: "include",
+	});
+	const data = await response.json();
+
+	return data as APIResponse<Board>;
+};
+
+export const getBoardsByCompany = async (args: GetBoardRequest) => {
 	const response = await fetch(
-		`${process.env.BACKEND_API_URL}/boards/${args.shortName}`,
+		`${BACKEND_API_URL}/boards/c/${args.shortName}`,
 		{
 			method: "GET",
 			credentials: "include",
@@ -29,5 +40,5 @@ export const getBoard = async (args: GetBoardRequest) => {
 	);
 	const data = await response.json();
 
-	return data as APIResponse<Board>;
+	return data as APIResponse<Board[]>;
 };

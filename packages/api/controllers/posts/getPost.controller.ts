@@ -1,12 +1,13 @@
 import { db } from "@/database";
 import { postVotes } from "@/database/schema/post_votes";
 import { posts } from "@/database/schema/posts";
+import { users } from "@/database/schema/users";
 import type {
 	GetPostRequest,
 	GetPostResponse,
 } from "@/models/posts/getPost.model";
 import type { CustomRequestHandler } from "@/types";
-import { count, eq } from "drizzle-orm";
+import { count, eq, sql } from "drizzle-orm";
 
 export const getPostController: CustomRequestHandler<
 	GetPostRequest,
@@ -24,11 +25,22 @@ export const getPostController: CustomRequestHandler<
 				createdAt: posts.createdAt,
 				updatedAt: posts.updatedAt,
 				votes: count(postVotes.postId),
+				author: {
+					id: users.id,
+					firstName: users.firstName,
+					lastName: users.lastName,
+					email: users.email,
+				},
+				isVotedByUser:
+					sql<boolean>`SUM(CASE WHEN ${postVotes.userId} = ${req.user?.id || ""} THEN 1 ELSE 0 END) > 0`.as(
+						"isVotedByUser",
+					),
 			})
 			.from(posts)
 			.where(eq(posts.id, postId))
-			.innerJoin(postVotes, eq(postVotes.postId, posts.id))
-			.groupBy(posts.id);
+			.leftJoin(postVotes, eq(postVotes.postId, posts.id))
+			.leftJoin(users, eq(posts.userId, users.id))
+			.groupBy(posts.id, users.id);
 
 		if (post.length === 0) {
 			return res.status(404).json({

@@ -2,7 +2,7 @@ import type { ZodExpressSchema } from "@/types";
 import { z } from "zod";
 
 export const postCommentRequestBody = z.object({
-	content: z.string().min(1),
+	content: z.string().min(1).max(2048),
 	postId: z.string(),
 });
 

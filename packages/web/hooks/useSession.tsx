@@ -8,7 +8,7 @@ export const SessionContext = createContext<
 	ReturnType<typeof useSessionFunctions> | undefined
 >(undefined);
 
-const useSessionFunctions = () => {
+export const useSessionFunctions = () => {
 	const [isLoading, setIsLoading] = useState(true);
 	const [session, setSession] = useState<GetUserResponse | undefined>(
 		undefined,
@@ -56,15 +56,6 @@ const useSessionFunctions = () => {
 		logIn,
 		refreshSession,
 	};
-};
-
-export const SessionProvider = ({
-	children,
-}: { children: React.ReactNode }) => {
-	const value = useSessionFunctions();
-	return (
-		<SessionContext.Provider value={value}>{children}</SessionContext.Provider>
-	);
 };
 
 export const useSession = () => {

@@ -9,6 +9,14 @@ export const getUserController: CustomRequestHandler<
 	GetUserResponse
 > = async (req, res) => {
 	try {
+		if (!req.user) {
+			return res.status(401).json({
+				success: false,
+				message: "Unauthorized",
+				status: 401,
+			});
+		}
+
 		const user = await db.query.users.findFirst({
 			where: (users) => eq(users.id, req.user!.id),
 		});

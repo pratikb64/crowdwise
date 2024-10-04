@@ -1,3 +1,4 @@
+import { BACKEND_API_URL } from "@/lib/constants";
 import type {
 	APIResponse,
 	LoginRequest,
@@ -5,7 +6,7 @@ import type {
 } from "crowdwise-api/types";
 
 export const loginUser = async (args: LoginRequest) => {
-	const response = await fetch(`${process.env.BACKEND_API_URL}/login`, {
+	const response = await fetch(`${BACKEND_API_URL}/login`, {
 		method: "POST",
 		credentials: "include",
 		headers: {
@@ -22,7 +23,7 @@ export const loginUser = async (args: LoginRequest) => {
 };
 
 export const userRegistration = async (args: RegisterRequest) => {
-	const response = await fetch(`${process.env.BACKEND_API_URL}/register`, {
+	const response = await fetch(`${BACKEND_API_URL}/register`, {
 		method: "POST",
 		credentials: "include",
 		headers: {
@@ -42,7 +43,7 @@ export const userRegistration = async (args: RegisterRequest) => {
 };
 
 export const logoutUser = async () => {
-	const response = await fetch(`${process.env.BACKEND_API_URL}/logout`, {
+	const response = await fetch(`${BACKEND_API_URL}/logout`, {
 		method: "GET",
 		credentials: "include",
 		headers: {

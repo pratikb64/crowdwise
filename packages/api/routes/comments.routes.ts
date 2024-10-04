@@ -1,6 +1,8 @@
+import { deleteCommentController } from "@/controllers/comments/deleteComment.controller";
 import { getCommentsController } from "@/controllers/comments/getComments.controller";
 import { postCommentController } from "@/controllers/comments/postComment.controller";
-import { checkAuth } from "@/middlewares/checkAuth";
+import { auth } from "@/middlewares/auth";
+import { deleteCommentModel } from "@/models/comments/deleteComment.model";
 import { getCommentsModel } from "@/models/comments/getComments.model";
 import { postCommentModel } from "@/models/comments/postComment.model";
 import { Router } from "express";
@@ -10,7 +12,7 @@ export const commentsRoutes = Router();
 
 commentsRoutes.post(
 	"/",
-	checkAuth,
+	auth(),
 	validateRequest(postCommentModel),
 	postCommentController,
 );
@@ -19,4 +21,11 @@ commentsRoutes.get(
 	"/p/:postId",
 	validateRequest(getCommentsModel),
 	getCommentsController,
+);
+
+commentsRoutes.delete(
+	"/:commentId",
+	auth(),
+	validateRequest(deleteCommentModel),
+	deleteCommentController,
 );

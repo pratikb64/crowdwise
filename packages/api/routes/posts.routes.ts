@@ -1,9 +1,11 @@
 import { createPostController } from "@/controllers/posts/createPost.controller";
+import { deletePostController } from "@/controllers/posts/deletePost.controller";
 import { getBoardPostsController } from "@/controllers/posts/getBoardPosts.controller";
 import { getPostController } from "@/controllers/posts/getPost.controller";
 import { votePostController } from "@/controllers/posts/votePost.controller";
-import { checkAuth } from "@/middlewares/checkAuth";
+import { auth } from "@/middlewares/auth";
 import { createPostModel } from "@/models/posts/createPost.model";
+import { deletePostModel } from "@/models/posts/deletePost.model";
 import { getBoardPostsModel } from "@/models/posts/getBoardPosts.model";
 import { getPostModel } from "@/models/posts/getPost.model";
 import { votePostModel } from "@/models/posts/votePost.model";
@@ -14,22 +16,39 @@ export const postsRoutes = Router();
 
 postsRoutes.post(
 	"/",
-	checkAuth,
+	auth(),
 	validateRequest(createPostModel),
 	createPostController,
 );
 
 postsRoutes.get(
 	"/b/:boardId",
+	auth({
+		allowPublic: true,
+	}),
 	validateRequest(getBoardPostsModel),
 	getBoardPostsController,
 );
 
 postsRoutes.put(
 	"/:postId/vote",
-	checkAuth,
+	auth(),
 	validateRequest(votePostModel),
 	votePostController,
 );
 
-postsRoutes.get("/:postId", validateRequest(getPostModel), getPostController);
+postsRoutes.get(
+	"/:postId",
+	auth({
+		allowPublic: true,
+	}),
+	validateRequest(getPostModel),
+	getPostController,
+);
+
+postsRoutes.delete(
+	"/:postId",
+	auth(),
+	validateRequest(deletePostModel),
+	deletePostController,
+);

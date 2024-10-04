@@ -1,10 +1,11 @@
 import { db } from "@/database";
 import { boardPosts } from "@/database/schema/board_post";
+import { companyUsers } from "@/database/schema/company_users";
 import { postVotes } from "@/database/schema/post_votes";
 import { type Post, posts } from "@/database/schema/posts";
 import type { CreatePostRequest } from "@/models/posts/createPost.model";
 import type { CustomRequestHandler } from "@/types";
-import { and, eq } from "drizzle-orm";
+import { eq } from "drizzle-orm";
 
 export const createPostController: CustomRequestHandler<
 	CreatePostRequest
@@ -24,19 +25,16 @@ export const createPostController: CustomRequestHandler<
 			});
 		}
 
-		const canUserAccess = await db.query.companyUsers.findFirst({
-			where: (companyUsers) =>
-				and(
-					eq(companyUsers.userId, req.user!.id),
-					eq(companyUsers.companyId, board.companyId),
-				),
+		const userLinkedToCompany = await db.query.companyUsers.findFirst({
+			where: (companyUsers) => eq(companyUsers.companyId, req.user!.id),
 		});
 
-		if (!canUserAccess) {
-			return res.status(401).json({
-				success: false,
-				message: "You are not authorized to access this board!",
-				status: 401,
+		if (userLinkedToCompany) {
+			await db.insert(companyUsers).values({
+				userId: req.user!.id,
+				companyId: board.companyId,
+				createdAt: new Date(),
+				role: "contributor",
 			});
 		}
 

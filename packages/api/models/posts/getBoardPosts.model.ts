@@ -17,7 +17,9 @@ export type GetBoardPostsResponse = {
 	title: string;
 	content: string;
 	status: PostStatus;
-	upVotes: number;
+	votes: number;
+	isVotedByUser: boolean;
+	commentsCount: number;
 	createdAt: Date;
 	updatedAt: Date;
 }[];

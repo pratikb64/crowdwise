@@ -1,3 +1,4 @@
+import { BACKEND_API_URL } from "@/lib/constants";
 import type {
 	APIResponse,
 	Company,
@@ -6,7 +7,7 @@ import type {
 } from "crowdwise-api/types";
 
 export const createCompany = async (args: CreateCompanyRequest) => {
-	const response = await fetch(`${process.env.BACKEND_API_URL}/companies`, {
+	const response = await fetch(`${BACKEND_API_URL}/companies`, {
 		method: "POST",
 		credentials: "include",
 		body: JSON.stringify(args),
@@ -21,7 +22,7 @@ export const createCompany = async (args: CreateCompanyRequest) => {
 
 export const getCompany = async (args: GetCompanyRequest) => {
 	const response = await fetch(
-		`${process.env.BACKEND_API_URL}/companies/${args.shortName}`,
+		`${BACKEND_API_URL}/companies/${args.shortName}`,
 		{
 			method: "GET",
 			credentials: "include",

@@ -1,6 +1,6 @@
 import { createCompanyController } from "@/controllers/companies/createCompany.controller";
 import { getCompanyController } from "@/controllers/companies/getCompany.controller";
-import { checkAuth } from "@/middlewares/checkAuth";
+import { auth } from "@/middlewares/auth";
 import { createCompanyModel } from "@/models/companies/createCompany.model";
 import { getCompanyModel } from "@/models/companies/getCompany.model";
 import { Router } from "express";
@@ -10,7 +10,7 @@ export const companiesRoutes = Router();
 
 companiesRoutes.post(
 	"/",
-	checkAuth,
+	auth(),
 	validateRequest(createCompanyModel),
 	createCompanyController,
 );

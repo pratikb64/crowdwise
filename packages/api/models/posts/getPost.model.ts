@@ -18,6 +18,13 @@ export type GetPostResponse = {
 	content: string;
 	status: PostStatus;
 	votes: number;
+	author: {
+		id: string;
+		firstName: string;
+		lastName: string;
+		email: string;
+	} | null;
+	isVotedByUser: boolean;
 	createdAt: Date;
 	updatedAt: Date;
 };

@@ -1,5 +1,5 @@
 import { drizzle } from "drizzle-orm/node-postgres";
-import { Client } from "pg";
+import { Pool } from "pg";
 import { DATABASE_URL } from "../env";
 import * as boards from "./schema/boards";
 import * as comments from "./schema/comments";
@@ -9,8 +9,9 @@ import * as postVotes from "./schema/post_votes";
 import * as posts from "./schema/posts";
 import * as users from "./schema/users";
 
-export const pgClient = new Client({
+export const pgClient = new Pool({
 	connectionString: DATABASE_URL,
+	keepAlive: true,
 });
 
 console.log("🟡 Connecting to database...");

@@ -13,9 +13,14 @@ export type GetCommentsRequest = z.infer<typeof getCommentsRequestParams>;
 
 export type GetCommentsResponse = {
 	id: string;
-	userId: string;
 	postId: string;
 	content: string;
 	createdAt: Date;
 	updatedAt: Date;
+	user: {
+		id: string;
+		firstName: string;
+		lastName: string;
+		email: string;
+	} | null;
 }[];

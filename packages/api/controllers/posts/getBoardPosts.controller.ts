@@ -1,5 +1,6 @@
 import { db } from "@/database";
 import { boardPosts } from "@/database/schema/board_post";
+import { comments } from "@/database/schema/comments";
 import { postVotes } from "@/database/schema/post_votes";
 import { posts } from "@/database/schema/posts";
 import type {
@@ -7,7 +8,7 @@ import type {
 	GetBoardPostsResponse,
 } from "@/models/posts/getBoardPosts.model";
 import type { CustomRequestHandler } from "@/types";
-import { count, eq } from "drizzle-orm";
+import { count, eq, sql } from "drizzle-orm";
 
 export const getBoardPostsController: CustomRequestHandler<
 	GetBoardPostsRequest,
@@ -37,11 +38,17 @@ export const getBoardPostsController: CustomRequestHandler<
 				createdAt: posts.createdAt,
 				updatedAt: posts.updatedAt,
 				votes: count(postVotes.postId),
+				isVotedByUser:
+					sql<boolean>`SUM(CASE WHEN ${postVotes.userId} = ${req.user?.id || ""} THEN 1 ELSE 0 END) > 0`.as(
+						"isVotedByUser",
+					),
+				commentsCount: count(comments.postId),
 			})
 			.from(boardPosts)
-			.rightJoin(posts, eq(boardPosts.postId, posts.id))
 			.where(eq(boardPosts.boardId, board.id))
-			.rightJoin(postVotes, eq(postVotes.postId, posts.id))
+			.leftJoin(posts, eq(boardPosts.postId, posts.id))
+			.leftJoin(postVotes, eq(postVotes.postId, posts.id))
+			.leftJoin(comments, eq(comments.postId, posts.id))
 			.groupBy(posts.id)) as unknown as GetBoardPostsResponse;
 
 		return res.status(200).json({
