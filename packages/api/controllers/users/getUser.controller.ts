@@ -2,7 +2,7 @@ import { db } from "@/database";
 import type { Company } from "@/database/schema/companies";
 import type { GetUserResponse } from "@/models/users/getUser.model";
 import type { CustomRequestHandler } from "@/types";
-import { eq } from "drizzle-orm";
+import { and, eq } from "drizzle-orm";
 
 export const getUserController: CustomRequestHandler<
 	any,
@@ -30,7 +30,8 @@ export const getUserController: CustomRequestHandler<
 		}
 
 		const userCompanyId = await db.query.companyUsers.findFirst({
-			where: (companyUsers) => eq(companyUsers.userId, user.id),
+			where: (companyUsers) =>
+				and(eq(companyUsers.userId, user.id), eq(companyUsers.role, "admin")),
 		});
 
 		let company: Company | undefined;
