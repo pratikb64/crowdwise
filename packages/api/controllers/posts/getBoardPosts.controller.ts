@@ -8,7 +8,7 @@ import type {
 	GetBoardPostsResponse,
 } from "@/models/posts/getBoardPosts.model";
 import type { CustomRequestHandler } from "@/types";
-import { count, eq, sql } from "drizzle-orm";
+import { count, desc, eq, sql } from "drizzle-orm";
 
 export const getBoardPostsController: CustomRequestHandler<
 	GetBoardPostsRequest,
@@ -49,6 +49,7 @@ export const getBoardPostsController: CustomRequestHandler<
 			.leftJoin(posts, eq(boardPosts.postId, posts.id))
 			.leftJoin(postVotes, eq(postVotes.postId, posts.id))
 			.leftJoin(comments, eq(comments.postId, posts.id))
+			.orderBy(desc(posts.createdAt))
 			.groupBy(posts.id)) as unknown as GetBoardPostsResponse;
 
 		return res.status(200).json({
