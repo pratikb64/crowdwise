@@ -1,6 +1,7 @@
 import { useSession } from "@/hooks/useSession";
 import { ExitIcon } from "@radix-ui/react-icons";
 import Link from "next/link";
+import { useEffect, useState } from "react";
 import { LoadingIcon } from "./LoadingIcon";
 import { Avatar, AvatarImage } from "./ui/avatar";
 import { Button } from "./ui/button";
@@ -13,19 +14,20 @@ import {
 
 export const AuthDropdown = () => {
 	const { isLoading, session, logOut } = useSession();
+	const [loginPageUrl, setLoginPageUrl] = useState("");
+	const [registerPageUrl, setRegisterPageUrl] = useState("");
 
-	const redirectUrl =
-		location.pathname === "/" || location.pathname === "/login"
-			? undefined
-			: location.pathname;
+	useEffect(() => {
+		const redirectUrl =
+			location.pathname === "/" || location.pathname === "/login"
+				? undefined
+				: location.pathname;
+		setLoginPageUrl(redirectUrl ? `/login?redirect=${redirectUrl}` : "/login");
 
-	const loginPageUrl = redirectUrl
-		? `/login?redirect=${redirectUrl}`
-		: "/login";
-
-	const registerPageUrl = redirectUrl
-		? `/register?redirect=${redirectUrl}`
-		: "/register";
+		setRegisterPageUrl(
+			redirectUrl ? `/register?redirect=${redirectUrl}` : "/register",
+		);
+	}, []);
 
 	return (
 		<>
