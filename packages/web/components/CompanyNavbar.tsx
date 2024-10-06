@@ -9,14 +9,16 @@ import { useEffect } from "react";
 
 export const CompanyNavbar = () => {
 	const { company, getCompanyAsync } = useCompanyStore((state) => state);
-	const params = useParams<{ companyUrl: string }>();
+	const { companyUrl } = useParams<{ companyUrl: string }>();
 	const getCompanyAsyncState = useCompanyStore(
 		(state) => state.asyncStates.getCompanyAsyncState,
 	);
 
 	useEffect(() => {
-		getCompanyAsync(params.companyUrl);
-	}, []);
+		if (companyUrl) {
+			getCompanyAsync(companyUrl);
+		}
+	}, [companyUrl]);
 
 	return (
 		<div className="w-full border-b border-gray-300">
@@ -31,7 +33,7 @@ export const CompanyNavbar = () => {
 					getCompanyAsyncState === AsyncState.Idle ? (
 						<LoadingIcon className="size-6 animate-spin" />
 					) : (
-						<Link href={`/c/${params.companyUrl}`}>
+						<Link href={`/c/${companyUrl}`}>
 							<div className="text-xl font-bold">{company?.name}</div>
 						</Link>
 					)}
