@@ -14,17 +14,30 @@ import {
 export const AuthDropdown = () => {
 	const { isLoading, session, logOut } = useSession();
 
+	const redirectUrl =
+		location.pathname === "/" || location.pathname === "/login"
+			? undefined
+			: location.pathname;
+
+	const loginPageUrl = redirectUrl
+		? `/login?redirect=${redirectUrl}`
+		: "/login";
+
+	const registerPageUrl = redirectUrl
+		? `/register?redirect=${redirectUrl}`
+		: "/register";
+
 	return (
 		<>
 			{!session && !isLoading && (
 				<div className="flex items-center gap-4">
 					<div className="text-gray-500 hover:text-gray-700">
-						<Link href="/login">
+						<Link href={loginPageUrl}>
 							<Button variant="ghost">Login</Button>
 						</Link>
 					</div>
 					<div className="text-gray-500 hover:text-gray-700">
-						<Link href="/register">
+						<Link href={registerPageUrl}>
 							<Button variant="default" className="bg-primary">
 								Sign up
 							</Button>

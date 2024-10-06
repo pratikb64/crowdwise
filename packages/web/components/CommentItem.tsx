@@ -49,16 +49,16 @@ export const CommentItem = (props: Props) => {
 
 	return (
 		<div>
-			<div className="flex gap-4 mt-4">
+			<div className="flex gap-3 mt-4">
 				<div className="w-10">
-					<Avatar className="mx-auto size-9">
+					<Avatar className="mx-auto size-8">
 						<AvatarImage
 							src={`https://ui-avatars.com/api/?name=${props.user?.firstName}+${props.user?.lastName}&rounded=true&background=b8e986&color=417505`}
 						/>
 						<AvatarFallback>CW</AvatarFallback>
 					</Avatar>
 				</div>
-				<div className="mt-2 text-sm font-semibold">
+				<div className="mt-1.5 text-sm font-semibold">
 					{props.user?.firstName} {props.user?.lastName}
 				</div>
 			</div>

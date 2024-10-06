@@ -7,6 +7,7 @@ import type {
 	GetBoardPostsResponse,
 	GetPostRequest,
 	GetPostResponse,
+	UpdatePostStatusRequest,
 	VotePostRequest,
 } from "crowdwise-api/types";
 
@@ -63,6 +64,23 @@ export const deletePost = async (args: DeletePostRequest) => {
 		method: "DELETE",
 		credentials: "include",
 	});
+	const data = await response.json();
+
+	return data as APIResponse<undefined>;
+};
+
+export const updatePostStatus = async (args: UpdatePostStatusRequest) => {
+	const response = await fetch(
+		`${BACKEND_API_URL}/posts/${args.postId}/status`,
+		{
+			method: "PUT",
+			credentials: "include",
+			body: JSON.stringify({ status: args.status }),
+			headers: {
+				"Content-Type": "application/json",
+			},
+		},
+	);
 	const data = await response.json();
 
 	return data as APIResponse<undefined>;

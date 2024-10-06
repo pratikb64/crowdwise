@@ -1,17 +1,23 @@
-import { LoadingIcon } from "@/components/LoadingIcon";
 import { useCompanyStore } from "@/providers/CompanyStoreProvider";
 import { AsyncState } from "@/types";
 import { CardStackIcon } from "@radix-ui/react-icons";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
+import { LoadingIcon } from "./LoadingIcon";
 import { PostItem } from "./PostItem";
 
-export const PostList = () => {
-	const { getPostsAsync, activeBoard, posts, company } = useCompanyStore(
-		(state) => state,
-	);
+export const AdminPostList = () => {
+	const { getPostsAsync, activeBoard, posts, activePost, company } =
+		useCompanyStore((state) => state);
 	const getPostsAsyncState = useCompanyStore(
 		(state) => state.asyncStates.getPostsAsyncState,
 	);
+	const [highlightedPost, setHighlightedPost] = useState(activePost?.id);
+
+	useEffect(() => {
+		if (activePost) {
+			setHighlightedPost(activePost.id);
+		}
+	}, [activePost]);
 
 	useEffect(() => {
 		if (!activeBoard) return;
@@ -36,15 +42,17 @@ export const PostList = () => {
 						key={post.id}
 						votes={post.votes}
 						commentsCount={post.commentsCount}
-						url={`/c/${company?.shortName}/p/${post.id}`}
+						url={`/admin/c/${company?.shortName}/feedback/p/${post.id}`}
+						isHighlighted={post.id === highlightedPost}
+						onClick={() => setHighlightedPost(post.id)}
 					/>
 				))}
-				{getPostsAsyncState === AsyncState.Pending && (
-					<div className="py-6">
-						<LoadingIcon className="mx-auto size-10 animate-spin" />
-					</div>
-				)}
 			</div>
+			{getPostsAsyncState === AsyncState.Pending && (
+				<div className="py-6">
+					<LoadingIcon className="mx-auto size-10 animate-spin" />
+				</div>
+			)}
 		</div>
 	);
 };

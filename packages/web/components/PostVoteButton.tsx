@@ -9,6 +9,12 @@ interface Props {
 }
 
 export const PostVoteButton = (props: Props) => {
+	const onButtonClick = async (e: React.MouseEvent<HTMLButtonElement>) => {
+		e.preventDefault();
+		e.stopPropagation();
+		await props.onClick(props.id);
+	};
+
 	return (
 		<button
 			type="button"
@@ -16,7 +22,7 @@ export const PostVoteButton = (props: Props) => {
 				"flex flex-col items-center justify-center font-semibold p-1.5 px-2.5 text-xs h-max border  border-gray-200 rounded-md shadow-sm w-10 overflow-hidden",
 				props.active && "border-blue-500 bg-blue-50 border-[1.5px]",
 			)}
-			onClick={() => props.onClick(props.id)}
+			onClick={onButtonClick}
 		>
 			<CaretUpIcon className="size-4" />
 			<span>{props.votes}</span>

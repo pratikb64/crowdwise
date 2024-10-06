@@ -13,7 +13,10 @@ import {
 	FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
+import { useSession } from "@/hooks/useSession";
 import { userRegistration } from "@/services/auth.service";
+import { useRouter, useSearchParams } from "next/navigation";
+import { useEffect } from "react";
 import { toast } from "sonner";
 
 const schema = z
@@ -50,6 +53,9 @@ export default function Register() {
 			confirmPassword: "",
 		},
 	});
+	const params = useSearchParams();
+	const router = useRouter();
+	const { session } = useSession();
 
 	const onSubmit = async (data: z.infer<typeof schema>) => {
 		const loadingToastId = toast.loading("Registering user...");
@@ -63,6 +69,9 @@ export default function Register() {
 		switch (response.status) {
 			case 201:
 				toast.success("User registered successfully", { id: loadingToastId });
+				router.push(
+					`${params.get("redirect") ? `/login?redirect=${params.get("redirect")}` : "/login"}`,
+				);
 				break;
 			case 400:
 				toast.info("User already exists", { id: loadingToastId });
@@ -72,6 +81,12 @@ export default function Register() {
 				break;
 		}
 	};
+
+	useEffect(() => {
+		if (session) {
+			router.push(params.get("redirect") ?? "/admin/c");
+		}
+	}, [session]);
 
 	return (
 		<>

@@ -11,7 +11,6 @@ export const LoadingIcon = forwardRef<
 			preserveAspectRatio="xMidYMid"
 			style={{
 				display: "block",
-				background: "rgb(255, 255, 255)",
 			}}
 			{...props}
 		>

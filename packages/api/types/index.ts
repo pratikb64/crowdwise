@@ -26,6 +26,7 @@ export type {
 	GetPostRequest,
 	GetPostResponse,
 } from "../models/posts/getPost.model";
+export type { UpdatePostStatusRequest } from "../models/posts/updatePostStatus.model";
 export type { VotePostRequest } from "../models/posts/votePost.model";
 export type { GetUserResponse } from "../models/users/getUser.model";
 

@@ -1,13 +1,5 @@
-"use client";
-import { Navbar } from "@/components/Navbar";
-import { SessionProvider } from "@/providers/SessionProvider";
+import { redirect } from "next/navigation";
 
 export const HomePage = () => {
-	return (
-		<SessionProvider>
-			<div>
-				<Navbar />
-			</div>
-		</SessionProvider>
-	);
+	redirect("/login");
 };

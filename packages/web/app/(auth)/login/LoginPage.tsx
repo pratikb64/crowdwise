@@ -14,7 +14,8 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { useSession } from "@/hooks/useSession";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
+import { useEffect } from "react";
 import { toast } from "sonner";
 
 const schema = z.object({
@@ -28,7 +29,8 @@ const schema = z.object({
 });
 
 export const LoginPage = () => {
-	const { logIn } = useSession();
+	const { logIn, session } = useSession();
+	const params = useSearchParams();
 	const router = useRouter();
 	const loginForm = useForm({
 		resolver: zodResolver(schema),
@@ -46,7 +48,7 @@ export const LoginPage = () => {
 		switch (res.status) {
 			case 200:
 				toast.success("Logged in successfully", { id: loadingToastId });
-				router.push("/");
+				router.push(params.get("redirect") ?? "/admin/c");
 				break;
 			case 400:
 				toast.error("Incorrect password", { id: loadingToastId });
@@ -59,6 +61,12 @@ export const LoginPage = () => {
 				break;
 		}
 	};
+
+	useEffect(() => {
+		if (session) {
+			router.push(params.get("redirect") ?? "/admin/c");
+		}
+	}, [session]);
 
 	return (
 		<>
@@ -100,7 +108,10 @@ export const LoginPage = () => {
 
 			<p className="text-center">
 				Don't have an account?{" "}
-				<a href="/register" className="text-primary underline">
+				<a
+					href={`/register?redirect=${params.get("redirect")}`}
+					className="text-primary underline"
+				>
 					Sign up
 				</a>
 			</p>

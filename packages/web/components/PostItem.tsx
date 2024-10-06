@@ -1,3 +1,4 @@
+import { cn } from "@/lib/utils";
 import { useCompanyStore } from "@/providers/CompanyStoreProvider";
 import { ChatBubbleIcon } from "@radix-ui/react-icons";
 import type { PostStatus } from "crowdwise-api/types";
@@ -12,17 +13,24 @@ interface Props {
 	status: PostStatus;
 	votes: number;
 	commentsCount: number;
+	url: string;
+	isHighlighted?: boolean;
+	onClick?: () => void;
 }
 
 export const PostItem = (props: Props) => {
-	const { company, toggleUpVoteAsync } = useCompanyStore((state) => state);
+	const { toggleUpVoteAsync } = useCompanyStore((state) => state);
 
 	return (
-		<div className="flex items-center justify-between pr-4 border-t border-gray-300 shadow-sm cursor-pointer hover:bg-gray-50">
-			<Link
-				href={`/c/${company?.shortName}/p/${props.id}`}
-				className="w-full py-4 pl-4"
-			>
+		<div
+			className={cn(
+				"flex items-center justify-between pr-4 shadow-sm cursor-pointer hover:bg-gray-50",
+				props.isHighlighted &&
+					"border-l-4 border-blue-500 bg-blue-50 hover:bg-blue-50",
+			)}
+			onClick={() => props.onClick?.()}
+		>
+			<Link href={props.url} className="w-full py-4 pl-4">
 				<span className="overflow-hidden text-sm font-semibold text-ellipsis whitespace-nowrap">
 					{props.title}
 				</span>

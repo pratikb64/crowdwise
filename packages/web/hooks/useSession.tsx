@@ -1,7 +1,6 @@
 import { loginUser, logoutUser } from "@/services/auth.service";
 import { getUser } from "@/services/user.service";
 import type { GetUserResponse, LoginRequest } from "crowdwise-api/types";
-import { useRouter } from "next/navigation";
 import { createContext, useContext, useEffect, useState } from "react";
 
 export const SessionContext = createContext<
@@ -13,15 +12,11 @@ export const useSessionFunctions = () => {
 	const [session, setSession] = useState<GetUserResponse | undefined>(
 		undefined,
 	);
-	const router = useRouter();
 
 	const fetchSession = async () => {
 		const user = await getUser();
 		setSession(user.data);
 		setIsLoading(false);
-		if (user.data && !user.data.company) {
-			router.push("/onboarding");
-		}
 	};
 
 	const logOut = async () => {

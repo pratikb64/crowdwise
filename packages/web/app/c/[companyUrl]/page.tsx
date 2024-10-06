@@ -33,7 +33,12 @@ export default function CompanyPage() {
 								<CreatePost />
 							</div>
 							<div className="mt-4">
-								<PostList />
+								<div className="mb-8 border border-gray-300 rounded-md">
+									<div className="w-full p-4 border-b border-gray-300 bg-zinc-50 rounded-t-md">
+										Recent Posts
+									</div>
+									<PostList />
+								</div>
 							</div>
 						</>
 					)}

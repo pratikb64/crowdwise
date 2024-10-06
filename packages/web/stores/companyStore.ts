@@ -3,6 +3,7 @@ import { getCompany } from "@/services/company.service";
 import {
 	getPost,
 	getPostsByBoard,
+	updatePostStatus,
 	updatePostVote,
 } from "@/services/post.service";
 import { AsyncState } from "@/types";
@@ -11,6 +12,7 @@ import type {
 	Company,
 	GetBoardPostsResponse,
 	GetPostResponse,
+	PostStatus,
 } from "crowdwise-api/types";
 import { createStore } from "zustand/vanilla";
 
@@ -26,6 +28,7 @@ export type CompanyState = {
 		getPostsAsyncState: AsyncState;
 		toggleUpVoteAsyncState: AsyncState;
 		getPostAsyncState: AsyncState;
+		updatePostStatusAsyncState: AsyncState;
 	};
 };
 
@@ -37,6 +40,7 @@ export type CompanyActions = {
 	toggleUpVoteAsync: (postId: string) => Promise<void>;
 	getPostAsync: (postId: string) => Promise<void>;
 	resetPosts: () => void;
+	updatePostStatusAsync: (postId: string, status: PostStatus) => Promise<void>;
 };
 
 export type CompanyStore = CompanyState & CompanyActions;
@@ -50,6 +54,7 @@ export const defaultInitState: CompanyState = {
 		getPostsAsyncState: AsyncState.Idle,
 		toggleUpVoteAsyncState: AsyncState.Idle,
 		getPostAsyncState: AsyncState.Idle,
+		updatePostStatusAsyncState: AsyncState.Idle,
 	},
 };
 
@@ -128,6 +133,7 @@ export const createCompanyStore = (
 		},
 		getPostsAsync: async (boardId) => {
 			set((state) => ({
+				posts: [],
 				asyncStates: {
 					...state.asyncStates,
 					getPostsAsyncState: AsyncState.Pending,
@@ -220,6 +226,35 @@ export const createCompanyStore = (
 					asyncStates: {
 						...state.asyncStates,
 						getPostAsyncState: AsyncState.Error,
+					},
+				}));
+			}
+		},
+		updatePostStatusAsync: async (postId, status) => {
+			const previousPosts = get().posts;
+			set((state) => ({
+				posts: state.posts.map((post) =>
+					post.id === postId ? { ...post, status } : post,
+				),
+				asyncStates: {
+					...state.asyncStates,
+					updatePostStatusAsyncState: AsyncState.Pending,
+				},
+			}));
+			try {
+				await updatePostStatus({ postId, status });
+				set((state) => ({
+					asyncStates: {
+						...state.asyncStates,
+						updatePostStatusAsyncState: AsyncState.Success,
+					},
+				}));
+			} catch (error) {
+				set((state) => ({
+					posts: previousPosts,
+					asyncStates: {
+						...state.asyncStates,
+						updatePostStatusAsyncState: AsyncState.Error,
 					},
 				}));
 			}

@@ -124,7 +124,7 @@ export default function Onboarding() {
 
 	useEffect(() => {
 		if (session?.company) {
-			router.push("/");
+			router.push(`/admin/c/${session.company.shortName}`);
 		}
 	}, [session]);
 

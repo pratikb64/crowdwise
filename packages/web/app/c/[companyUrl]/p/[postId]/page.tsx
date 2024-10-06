@@ -126,7 +126,7 @@ export default function PostPage() {
 						</div>
 					</div>
 					<div className="mt-4 md:ml-14">
-						<pre className="text-sm text-gray-700 font-sans">
+						<pre className="text-sm text-gray-700 font-sans text-wrap">
 							{post.content}
 						</pre>
 						<div className="mt-12">

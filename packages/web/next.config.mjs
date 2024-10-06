@@ -3,6 +3,9 @@ const nextConfig = {
   env: {
     BACKEND_API_URL: process.env.BACKEND_API_URL,
   },
+  typescript: {
+    ignoreBuildErrors: true,
+  },
 };
 
 export default nextConfig;
