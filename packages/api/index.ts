@@ -5,7 +5,10 @@ import { homeController } from "./controllers/home.controller";
 import { SERVER_PORT } from "./env";
 import { routes } from "./routes";
 
-const whitelist = ["http://localhost:3000"];
+const whitelist = [
+	"http://localhost:3000",
+	"https://api.crowdwise.pratikbadhe.com",
+];
 const corsOptions: CorsOptions = {
 	origin: (origin, callback) => {
 		if (!origin) {
