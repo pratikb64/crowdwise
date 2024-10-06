@@ -10,6 +10,25 @@ const envSchema = z.object({
 		])
 		.default("development"),
 	SERVER_PORT: z.coerce.number().min(1000).optional().default(3001),
+	WHITELIST_DOMAINS: z.string().transform((val, a) => {
+		const urls = val.split(",").map((url) => url.trim());
+		const validUrls = urls.filter((url) => {
+			try {
+				new URL(url);
+				return true;
+			} catch (_) {
+				return false;
+			}
+		});
+		if (urls.length !== validUrls.length) {
+			a.addIssue({
+				code: z.ZodIssueCode.custom,
+				message:
+					"Domains should be like 'http://localhost:3000,https://example.com'",
+			});
+		}
+		return urls;
+	}),
 	DATABASE_URL: z.string().trim().min(10),
 	AUTH_SECRET: z.string().trim().min(10),
 	JWT_SECRET: z.string().trim().min(10),
@@ -32,5 +51,11 @@ try {
 // "env" will always be defined at this point, but TS doesn't know that
 if (!env) process.exit(1);
 
-export const { NODE_ENV, SERVER_PORT, DATABASE_URL, AUTH_SECRET, JWT_SECRET } =
-	env;
+export const {
+	NODE_ENV,
+	SERVER_PORT,
+	DATABASE_URL,
+	AUTH_SECRET,
+	JWT_SECRET,
+	WHITELIST_DOMAINS,
+} = env;

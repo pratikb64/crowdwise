@@ -2,18 +2,14 @@ import cookieParser from "cookie-parser";
 import cors, { type CorsOptions } from "cors";
 import express from "express";
 import { homeController } from "./controllers/home.controller";
-import { SERVER_PORT } from "./env";
+import { SERVER_PORT, WHITELIST_DOMAINS } from "./env";
 import { routes } from "./routes";
 
-const whitelist = [
-	"http://localhost:3000",
-	"https://api.crowdwise.pratikbadhe.com",
-];
 const corsOptions: CorsOptions = {
 	origin: (origin, callback) => {
 		if (!origin) {
 			callback(null, true);
-		} else if (origin && whitelist.indexOf(origin) !== -1) {
+		} else if (origin && WHITELIST_DOMAINS.indexOf(origin) !== -1) {
 			callback(null, true);
 		} else {
 			callback(new Error("Not allowed by CORS"));
