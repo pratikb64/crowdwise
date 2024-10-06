@@ -17,7 +17,9 @@ export default function layout({ children }: { children: ReactNode }) {
 	const router = useRouter();
 
 	useEffect(() => {
-		getCompanyAsync(companyUrl);
+		if (companyUrl) {
+			getCompanyAsync(companyUrl);
+		}
 	}, [companyUrl]);
 
 	if (getCompanyAsyncState === AsyncState.Pending || isLoading) {
