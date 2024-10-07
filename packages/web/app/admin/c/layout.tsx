@@ -42,12 +42,7 @@ export default function layout({ children }: { children: ReactNode }) {
 		return <></>;
 	}
 
-	if (!companyUrl) {
-		router.push(`/admin/c/${session.company.shortName}`);
-		return <></>;
-	}
-
-	if (session.company.shortName !== companyUrl) {
+	if (companyUrl && session.company.shortName !== companyUrl) {
 		toast.info("You are not authorized to access this page");
 		router.push(`/c/${session.company.shortName}`);
 		return <></>;

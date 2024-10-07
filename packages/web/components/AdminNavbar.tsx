@@ -13,7 +13,7 @@ export const AdminNavbar = () => {
 	);
 
 	return (
-		<div className="p-4 bg-blue-500 w-full flex justify-between items-center">
+		<div className="p-4 bg-black w-full flex justify-between items-center">
 			<div className="flex items-center">
 				{getCompanyAsyncState === AsyncState.Pending ||
 				getCompanyAsyncState === AsyncState.Idle ? (

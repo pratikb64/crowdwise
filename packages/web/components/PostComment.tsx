@@ -1,3 +1,4 @@
+import { useSession } from "@/hooks/useSession";
 import { usePostStore } from "@/providers/PostStoreProvider";
 import { postComment } from "@/services/comment.service";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -23,8 +24,13 @@ export const LeaveAComment = () => {
 			comment: "",
 		},
 	});
+	const { session } = useSession();
 
 	const onSubmit = async (data: z.infer<typeof schema>) => {
+		if (!session) {
+			toast.error("Please login to post a comment");
+			return;
+		}
 		const loadingToastId = toast.loading("Posting comment...");
 		const response = await postComment({
 			content: data.comment,

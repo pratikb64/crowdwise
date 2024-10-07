@@ -26,7 +26,7 @@ export const PostItem = (props: Props) => {
 			className={cn(
 				"flex items-center justify-between pr-4 shadow-sm cursor-pointer hover:bg-gray-50",
 				props.isHighlighted &&
-					"border-l-4 border-blue-500 bg-blue-50 hover:bg-blue-50",
+					"border-l-4 border-black bg-gray-100 hover:bg-gray-100",
 			)}
 			onClick={() => props.onClick?.()}
 		>

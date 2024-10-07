@@ -6,6 +6,7 @@ import {
 	FormItem,
 	FormMessage,
 } from "@/components/ui/form";
+import { useSession } from "@/hooks/useSession";
 import { useCompanyStore } from "@/providers/CompanyStoreProvider";
 import { createPost } from "@/services/post.service";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -35,9 +36,16 @@ export const CreatePost = () => {
 			description: "",
 		},
 	});
+	const { session } = useSession();
 
 	const onSubmit = async (data: z.infer<typeof schema>) => {
 		if (!activeBoard || !company) return;
+
+		if (!session) {
+			toast.error("Please login to create a post");
+			return;
+		}
+
 		const loadingToastId = toast.loading("Creating post...");
 		const response = await createPost({
 			title: data.title,

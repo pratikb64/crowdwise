@@ -28,14 +28,14 @@ const schema = z.object({
 		.string()
 		.min(1, { message: "Company short name is required" })
 		.regex(/^[a-z0-9-]+$/, {
-			message: "Alphanumeric characters and hyphen only",
+			message: "Alphanumeric lowercase characters and hyphen only",
 		}),
 	boardName: z.string().min(1, { message: "Board name is required" }),
 	boardShortName: z
 		.string()
 		.min(1, { message: "Board short name is required" })
 		.regex(/^[a-z0-9-]+$/, {
-			message: "Alphanumeric characters and hyphen only",
+			message: "Alphanumeric lowercase characters and hyphen only",
 		}),
 });
 
@@ -124,7 +124,7 @@ export default function Onboarding() {
 
 	useEffect(() => {
 		if (session?.company) {
-			router.push(`/admin/c/${session.company.shortName}`);
+			router.push(`/c/${session.company.shortName}`);
 		}
 	}, [session]);
 
