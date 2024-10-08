@@ -1,8 +1,8 @@
 import { useCompanyStore } from "@/providers/CompanyStoreProvider";
-import { AsyncState } from "@/types";
 import { ExternalLinkIcon } from "@radix-ui/react-icons";
 import Link from "next/link";
 import React, { useEffect } from "react";
+import { CreateBoardModal } from "./CreateBoardModal";
 import { Button } from "./ui/button";
 import {
 	Select,
@@ -55,10 +55,7 @@ export const BoardsDropdown = () => {
 							{board.name}
 						</SelectItem>
 					))}
-					{(getBoardsAsyncState === AsyncState.Idle ||
-						getBoardsAsyncState === AsyncState.Pending) && (
-						<SelectItem value="loading">Loading</SelectItem>
-					)}
+					<CreateBoardModal />
 				</SelectContent>
 			</Select>
 			<Link href={`/c/${company?.shortName}`} target="_blank">
