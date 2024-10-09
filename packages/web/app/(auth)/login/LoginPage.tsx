@@ -39,6 +39,9 @@ export const LoginPage = () => {
 			password: "",
 		},
 	});
+	const registerUrl = params.get("redirect")
+		? `/register?redirect=${params.get("redirect")}`
+		: "/register";
 
 	const onSubmit = async (data: z.infer<typeof schema>) => {
 		const loadingToastId = toast.loading("Logging in...");
@@ -108,10 +111,7 @@ export const LoginPage = () => {
 
 			<p className="text-center">
 				Don't have an account?{" "}
-				<a
-					href={`/register?redirect=${params.get("redirect")}`}
-					className="text-primary underline"
-				>
+				<a href={registerUrl} className="text-primary underline">
 					Sign up
 				</a>
 			</p>
