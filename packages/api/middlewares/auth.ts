@@ -30,10 +30,10 @@ export const auth = (args?: AuthArgs) => {
 			next();
 		} catch (error) {
 			console.error(error);
-			res.status(500).json({
+			res.status(403).json({
 				success: false,
-				message: "Internal Server Error",
-				status: 500,
+				message: "Token expired or is invalid",
+				status: 403,
 			});
 		}
 	};

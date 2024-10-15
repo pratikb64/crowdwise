@@ -1,6 +1,3 @@
-> [!NOTE]
-> Project Phase 1 (MVP) is done. More features are being added.
-
 # Crowdwise
 Crowdwise helps you collect and organize feature requests to better understand customer needs and prioritize your roadmap.
 
